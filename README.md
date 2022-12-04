@@ -23,3 +23,5 @@ Tangentially - figured out how to FINALLY align VS function breaks the way I
 want. [StackOverFlow to the rescue](https://stackoverflow.com/a/60297501/4459746)
 Basically you need to go to the ```Tools/Options/Text Editor/C/Formatting/Indentation```
 which is completely reasonable.
+
+Honestly this is just teaching me a lot about casting. 

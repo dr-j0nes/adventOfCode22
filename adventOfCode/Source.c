@@ -6,6 +6,7 @@
 // 0x1000 = 4096 = 1 page (ok not always but always)
 //
 #define BUFFERSIZE 0x1000
+#define INPUT_FILE L"../Input/day1pt1.txt"
 
 //
 // ngl kinda don't like this name
@@ -22,10 +23,11 @@ int main() {
 	DWORD retVal = 1111;
 	BOOL bCheck = FALSE;
 	DWORD dwBytesRead = 0;
-	LPDWORD pBytesRead = &dwBytesRead;
+	LPDWORD lpBytesRead = &dwBytesRead;
 	LPVOID lpBuffer = malloc(BUFFERSIZE); // CAN FAIL CHECK THIS
 	DWORD dwCurrBuffSize = 0;
 	HANDLE hFile = INVALID_HANDLE_VALUE;
+	DWORD dwMaxValue = 0;
 
 	if (lpBuffer == NULL)
 	{
@@ -39,7 +41,7 @@ int main() {
 	// open read....
 	//
 	hFile = CreateFile(
-		L"../XXXInput/day1pt1.txt",
+		INPUT_FILE,
 		GENERIC_READ,
 		FILE_SHARE_READ,
 		NULL,
@@ -53,6 +55,75 @@ int main() {
 		retVal = 3333;
 		goto exit;
 	}
+
+	do {
+		bCheck = ReadFile(
+			hFile,
+			lpBuffer,
+			BUFFERSIZE - 1,
+			lpBytesRead,
+			NULL
+		);
+
+		if (bCheck == FALSE)
+		{
+			errorPrinter(L"ReadFile errror!");
+			retVal = 3300;
+			goto exit;
+		}
+
+		//
+		// check for EOF
+		// there's probably a more elegant way to do this, but breaking works
+		//
+		if (bCheck && (dwBytesRead == 0))
+		{
+			break;
+		}
+
+		DWORD i = 0;
+		//i = atoi((char*)(lpBuffer)+ sizeof(char)*5);
+		//printf("%d\n", i);
+		//break;
+
+		char holder[50] = { 0 };
+		DWORD dwCount = 0;
+		DWORD dwTest = 0;
+		char cLastChar = 'a';
+		BOOL bCarRet = FALSE;
+
+		for (i = 0; i < BUFFERSIZE - 1; i++)
+		{
+			char x;
+			x = ((char*)(lpBuffer))[i];
+			if (x == '\n')
+			{
+				if (bCarRet == TRUE) 
+				{
+					printf("\tcarriage return\n");
+				}
+				else
+				{
+					dwTest = atoi((char*)(lpBuffer)+sizeof(char) * i);
+					printf("found int\t%d\n", dwTest);
+					bCarRet = TRUE;
+				}
+			}
+			if (x == '\r')
+			{
+
+			}
+			else {
+				bCarRet = FALSE;
+			}
+
+		}
+
+		dwCurrBuffSize += dwBytesRead;
+		printf("Bytes Read:\t%d\n", dwCurrBuffSize);
+		RtlZeroMemory(lpBuffer, BUFFERSIZE);
+
+	} while (TRUE); 
 
 	//
 	// the one we hit when things are good
