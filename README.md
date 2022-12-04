@@ -25,3 +25,6 @@ Basically you need to go to the ```Tools/Options/Text Editor/C/Formatting/Indent
 which is completely reasonable.
 
 Honestly this is just teaching me a lot about casting. 
+
+Stuck a bit - hit a wall where I'm not seeing the newlines that separate the "elves" 
+This could be an issue with my logic OR how ```atoi``` consumes whitespace. 
