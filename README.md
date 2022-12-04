@@ -1,6 +1,7 @@
-### AoC (not that one) 2022!!!
+### **AoC (not that one) 2022!!!**
 
-Doing this in C, on Windows, as a Visual Studio (2019) project for the laughs
+Doing this in C (raw, dirty, C), on Windows 10, as a Visual Studio (2019)
+project for the laughs.
 
 Starting 3/12/2022, so we're a bit behind schedule
 
@@ -17,3 +18,6 @@ is to read a page at a time, parse the data we have there, flush, repeat until
 we hit EOF.
 
 Right, what if the page break happens inside a number? Inside a chain? Bleh
+
+Tangentially - figured out how to FINALLY align VS function breaks the way I
+want. 
