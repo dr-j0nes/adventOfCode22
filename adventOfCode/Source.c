@@ -8,6 +8,37 @@
 #define BUFFERSIZE 0x1000
 #define INPUT_FILE L"../Input/day1pt1.txt"
 
+typedef struct
+{
+	DWORD dwFirst;
+	DWORD dwSecond;
+	DWORD dwThird;
+} TopThree;
+
+//
+// insert into our TopThree struct, shifting as needed
+//
+void insert(TopThree* top, DWORD pos, DWORD dwNewVal)
+{
+	DWORD dwSave = 0;
+
+	if (pos == 1)
+	{
+		dwSave = top->dwFirst;
+		top->dwFirst = dwNewVal;
+		top->dwThird = top->dwSecond;
+		top->dwSecond = dwSave;
+	}
+
+	if (pos == 2)
+	{
+		top->dwThird = top->dwSecond;
+		top->dwSecond = dwNewVal;
+	}
+
+}
+
+
 //
 // ngl kinda don't like this name
 //
@@ -27,7 +58,8 @@ int main() {
 	LPVOID lpBuffer = malloc(BUFFERSIZE); // CAN FAIL CHECK THIS
 	DWORD dwCurrBuffSize = 0;
 	HANDLE hFile = INVALID_HANDLE_VALUE;
-	DWORD dwBiggest = 0;
+	TopThree top = { 0 };
+	TopThree* lpTop = &top;
 
 	if (lpBuffer == NULL)
 	{
@@ -131,13 +163,24 @@ int main() {
 						sum += collection[j];
 					}
 					printf("\tsum:\t %d\n", sum);
-					if (sum > dwBiggest)
+					if (sum > top.dwFirst)
 					{
-						printf("\tNEW BIGGEST\n");
-						dwBiggest = sum;
+						insert(lpTop, 1, sum);
+						goto cleanup;
+					}
+
+					if (sum > top.dwSecond)
+					{
+						insert(lpTop, 2, sum);
+						goto cleanup;
+					}
+					if (sum > top.dwThird)
+					{
+						top.dwThird = sum;
 					}
 
 					// clean up
+				cleanup:
 					dwCount = 0;
 					RtlZeroMemory(collection, sizeof(collection));
 					//memset(collection, 0, sizeof(collection));	
@@ -149,8 +192,13 @@ int main() {
 
 	} while (TRUE); 
 
+	printf("top:\t\t%d\n", top.dwFirst);
+	printf("second:\t\t%d\n", top.dwSecond);
+	printf("third:\t\t%d\n", top.dwThird);
 
-	printf("biggest group: %d", dwBiggest);
+	DWORD dwTopThreeSum = top.dwFirst + top.dwSecond + top.dwThird;
+
+	printf("final sum of top 3:\t%d", dwTopThreeSum);
 	//
 	// the one we hit when things are good
 	//
