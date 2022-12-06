@@ -28,3 +28,10 @@ Honestly this is just teaching me a lot about casting.
 
 Stuck a bit - hit a wall where I'm not seeing the newlines that separate the "elves" 
 This could be an issue with my logic OR how ```atoi``` consumes whitespace. 
+
+Ok, figured it out - just needed to read forward 2 bytes after we found a '\r'
+If we saw another '\r', we were in a newline. This caught a bug I wasn't seeing
+previously - we were duplicating the value after a newline, because ```atoi``` 
+cosumes whitespace BEFORE the value it converts - so we'd see a newline, but it
+would be read like an int because there was a valid convertable string waiting
+for it. 
