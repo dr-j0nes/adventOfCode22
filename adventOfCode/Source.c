@@ -139,11 +139,11 @@ int main() {
 
 					// clean up
 					dwCount = 0;
-					memset(collection, 0, sizeof(collection));	
+					RtlZeroMemory(collection, sizeof(collection));
+					//memset(collection, 0, sizeof(collection));	
 					bSkip = TRUE;
 				}
 			}
-
 		}
 		RtlZeroMemory(lpBuffer, BUFFERSIZE);
 
