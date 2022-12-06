@@ -27,7 +27,7 @@ int main() {
 	LPVOID lpBuffer = malloc(BUFFERSIZE); // CAN FAIL CHECK THIS
 	DWORD dwCurrBuffSize = 0;
 	HANDLE hFile = INVALID_HANDLE_VALUE;
-	DWORD dwMaxValue = 0;
+	DWORD dwBiggest = 0;
 
 	if (lpBuffer == NULL)
 	{
@@ -56,6 +56,10 @@ int main() {
 		goto exit;
 	}
 
+	//
+	// honestly should encapsulate the file read
+	//
+
 	do {
 		bCheck = ReadFile(
 			hFile,
@@ -82,49 +86,71 @@ int main() {
 		}
 
 		DWORD i = 0;
-		//i = atoi((char*)(lpBuffer)+ sizeof(char)*5);
-		//printf("%d\n", i);
-		//break;
-
-		char holder[50] = { 0 };
 		DWORD dwCount = 0;
 		DWORD dwTest = 0;
-		char cLastChar = 'a';
-		BOOL bCarRet = FALSE;
-
+		BOOL bSkip = FALSE;
+		DWORD collection[50] = { 0 };
 		for (i = 0; i < BUFFERSIZE - 1; i++)
 		{
+			// skip new lines - atoi will consume them and double count the first
+			//element of each block
+			if (bSkip)
+			{
+				bSkip = FALSE;
+				continue;
+			}
 			char x;
 			x = ((char*)(lpBuffer))[i];
 			if (x == '\n')
 			{
-				if (bCarRet == TRUE) 
-				{
-					printf("\tcarriage return\n");
-				}
-				else
-				{
-					dwTest = atoi((char*)(lpBuffer)+sizeof(char) * i);
-					printf("found int\t%d\n", dwTest);
-					bCarRet = TRUE;
-				}
+				dwTest = atoi((char*)(lpBuffer)+sizeof(char) * i);
+				printf("found int\t%d\n", dwTest);
+				collection[dwCount] = dwTest;
+				dwCount += 1;
 			}
 			if (x == '\r')
 			{
+				//
+				// prevent us reading past the end of the buffer
+				// should never happen but *shrug*
+				//
+				if ((i + 2) > BUFFERSIZE - 1)
+				{
+					printf("hit break\n");
+					break;
+				}
+				//
+				// if '\r' ahead of us, means we're at THE END of a block
+				//
+				if (((char*)(lpBuffer))[i + 2] == '\r')
+				{
+					printf("\tdoing our sums!\n");
+					DWORD sum = 0;
+					for (DWORD j = 0; j < dwCount; j++)
+					{
+						sum += collection[j];
+					}
+					printf("\tsum:\t %d\n", sum);
+					if (sum > dwBiggest)
+					{
+						printf("\tNEW BIGGEST\n");
+						dwBiggest = sum;
+					}
 
-			}
-			else {
-				bCarRet = FALSE;
+					// clean up
+					dwCount = 0;
+					memset(collection, 0, sizeof(collection));	
+					bSkip = TRUE;
+				}
 			}
 
 		}
-
-		dwCurrBuffSize += dwBytesRead;
-		printf("Bytes Read:\t%d\n", dwCurrBuffSize);
 		RtlZeroMemory(lpBuffer, BUFFERSIZE);
 
 	} while (TRUE); 
 
+
+	printf("biggest group: %d", dwBiggest);
 	//
 	// the one we hit when things are good
 	//
@@ -137,5 +163,11 @@ exit:
 	{
 		CloseHandle(hFile);
 	}
+
+	if (NULL != lpBuffer)
+	{
+		free(lpBuffer);
+	}
+
 	return retVal;
 }
