@@ -1,12 +1,12 @@
 #include "Shared.h"
-//
-// need to be static for REASONS
-// 0x1000 = 4096 = 1 page (ok not always but always)
-//
 
 int main() {
 	DWORD retVal = 1111;
 
+	//
+	// eventually going to take input and use that to switch to the various day
+	// this works for right now
+	//
 	retVal = day1();
 
 	return retVal;

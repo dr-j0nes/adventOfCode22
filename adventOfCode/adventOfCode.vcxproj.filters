@@ -24,12 +24,15 @@
     <ClCompile Include="Shared.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="day2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shared.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="day1.h">
+    <ClInclude Include="days.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

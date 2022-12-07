@@ -1,6 +1,6 @@
 #pragma once
 #include <Windows.h>
 #include <stdio.h>
-#include "day1.h"
+#include "days.h"
 
 void errorPrinter(LPTSTR printer);
