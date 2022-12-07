@@ -35,3 +35,13 @@ previously - we were duplicating the value after a newline, because ```atoi```
 cosumes whitespace BEFORE the value it converts - so we'd see a newline, but it
 would be read like an int because there was a valid convertable string waiting
 for it. 
+
+#### Day 2
+
+Ok, here we get into the issue of how to organize things. I could add different
+VS projects under the main AOC solution and switch between them, OR I could
+just blow everything away and use git tags/branches to keep the historical
+record of what has been done. Kind of leaning towards the later, though it's
+going to make this read me LARGE. I could also make seperate folders for each
+day, which is kind of the same thing as the sub projects but git might like
+better. 
