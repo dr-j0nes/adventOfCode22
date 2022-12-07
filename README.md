@@ -6,7 +6,7 @@ project for the laughs.
 Starting 3/12/2022, so we're a bit behind schedule
 
 #### Day 1 
-
+--------
 First thoughts; god this would be easier to do in Python.
 
 Ok, problem is simple - read from a file (of unkown size), parse some strings
@@ -37,7 +37,7 @@ would be read like an int because there was a valid convertable string waiting
 for it. 
 
 #### Day 2
-
+--------
 Ok, here we get into the issue of how to organize things. I could add different
 VS projects under the main AOC solution and switch between them, OR I could
 just blow everything away and use git tags/branches to keep the historical
